@@ -8,6 +8,24 @@ sourceCompatibility = 1.7
 group 'io.sysmo'
 version '1.0-SNAPSHOT'
 
+class DeployWar extends DefaultTask {
+    String war_version = '0'
+    String archive_dest = '/usr/lib/tomcat7/webapps/myhook.war'
+    @TaskAction
+    def deploy() {
+        File archive = new File("build/libs/hook-template-${war_version}.war");
+        File dest = new File(archive_dest);
+        println "\nWill copy ${archive} to ${dest}"
+        dest << archive.bytes
+        println "Your application is accessible at http://127.0.0.1:8080/myhook";
+    }
+}
+
+task deployWar(type: DeployWar, dependsOn: 'war') {
+    war_version = version
+    archive_dest = '/opt/tomcat85/webapps/myhook.war'
+}
+
 repositories {
     mavenCentral()
 }

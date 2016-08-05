@@ -135,7 +135,7 @@
 
     <servlet-mapping>
       <servlet-name>HelloHook</servlet-name>
-      <url-pattern>""</url-pattern>
+      <url-pattern>/api</url-pattern>
     </servlet-mapping>
 
     <!-- Define the default session timeout for your application,
