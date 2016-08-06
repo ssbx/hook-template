@@ -1,17 +1,26 @@
 package io.sysmo.hooks.template;
 
 
-import java.io.IOException;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.json.Json;
-import javax.json.JsonWriter;
-import javax.json.JsonObjectBuilder;
+import java.io.IOException;
+import java.util.Date;
 
 
-public class HelloHook extends HttpServlet {
+public class UsersRequestHandler extends HttpServlet {
+
+    public void init(ServletConfig config) throws ServletException
+    {
+
+        MyHook.getInstance();
+
+    }
 
     public void doGet(
             HttpServletRequest request,
@@ -27,9 +36,12 @@ public class HelloHook extends HttpServlet {
         object.add("hello4", "e");
 
         response.setContentType("application/json");
-        response.setHeader("Pragma", "no-cache"); // for HTTP 1.0
+        response.setHeader("Expires", "Tue, 03 Jul 2001 06:00:00 GMT");
+        response.setDateHeader("Last-Modified", new Date().getTime());
+        response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control",
-               "private, no-store, no-cache, must-revalidate"); // for HTTP 1.1
+                "no-store, no-cache, must-revalidate, max-age=0, " +
+                                                   "post-check=0, pre-check=0");
 
         JsonWriter writer = Json.createWriter(response.getWriter());
         writer.writeObject(object.build());

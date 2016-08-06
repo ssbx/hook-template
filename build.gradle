@@ -17,7 +17,7 @@ class DeployWar extends DefaultTask {
         File dest = new File(archive_dest);
         println "\nWill copy ${archive} to ${dest}"
         dest << archive.bytes
-        println "Your application is accessible at http://127.0.0.1:8080/myhook";
+        println "Your application is accessible at http://127.0.0.1:8081/myhook";
     }
 }
 

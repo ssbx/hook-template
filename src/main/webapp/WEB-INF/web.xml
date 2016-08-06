@@ -32,7 +32,7 @@
 
     <context-param>
       <param-name>webmaster</param-name>
-      <param-value>contact@sysmo.io</param-value>
+      <param-value>contact@you.com</param-value>
       <description>
         The EMAIL address of the administrator to whom questions
         and comments about this application should be addressed.
@@ -66,11 +66,20 @@
     -->
 
     <servlet>
-      <servlet-name>RootServletHook</servlet-name>
-      <description>The main hook example.</description>
-      <servlet-class>io.sysmo.hooks.template.HelloHook</servlet-class>
-      <!-- Load this servlet at server startup time -->
-      <load-on-startup>5</load-on-startup>
+      <servlet-name>UsersAPI</servlet-name>
+      <description>HTTP user API.</description>
+      <servlet-class>io.sysmo.hooks.template.UsersRequestHandler</servlet-class>
+    </servlet>
+
+    <servlet>
+      <servlet-name>AppHooksAPI</servlet-name>
+      <description>AppHooks system API.</description>
+      <servlet-class>io.sysmo.hooks.template.AppHookRequestHandler</servlet-class>
+      <!--
+      Load this servlet at server startup time. Lower number first.
+      Negative value or undefined tag disable load-on-startup.
+      -->
+      <load-on-startup>1</load-on-startup>
     </servlet>
 
     <!-- Example with init params
@@ -91,18 +100,6 @@
       </init-param>
     </servlet>
     -->
-
-    <!-- Additional servlet example
-    <servlet>
-      <servlet-name>graph</servlet-name>
-      <description>
-        This servlet produces GIF images that are dynamically generated
-        graphs, based on the input parameters included on the request.
-        It is generally mapped to a specific request URI like "/graph".
-      </description>
-    </servlet>
-    -->
-
 
     <!-- Define mappings that are used by the servlet container to
          translate a particular request URI (context-relative) to a
@@ -134,8 +131,13 @@
     -->
 
     <servlet-mapping>
-      <servlet-name>RootServletHook</servlet-name>
-      <url-pattern>/</url-pattern>
+      <servlet-name>UsersAPI</servlet-name>
+      <url-pattern>/app/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+      <servlet-name>AppHooksAPI</servlet-name>
+      <url-pattern>/hooks/*</url-pattern>
     </servlet-mapping>
 
     <!-- Define the default session timeout for your application,
