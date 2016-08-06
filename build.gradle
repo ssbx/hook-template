@@ -10,7 +10,7 @@ version '1.0-SNAPSHOT'
 
 class DeployWar extends DefaultTask {
     String war_version = '0'
-    String archive_dest = '/usr/lib/tomcat7/webapps/myhook.war'
+    String archive_dest = '/var/lib/tomcat7/webapps/myhook.war'
     @TaskAction
     def deploy() {
         File archive = new File("build/libs/hook-template-${war_version}.war");
