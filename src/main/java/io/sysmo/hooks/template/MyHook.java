@@ -1,25 +1,57 @@
 package io.sysmo.hooks.template;
 
-/**
- * Created by seb on 06/08/16.
- * Main hook application.
- */
 
-class MyHook {
-    private static MyHook instance = null;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
 
-    static MyHook getInstance()
+
+public class MyHook extends HttpServlet implements AppHookInterface {
+
+
+
+    public void init(ServletConfig config) throws ServletException
     {
-        if (instance == null) {
-            instance = new MyHook();
-        }
-        return instance;
+        // db connection and initialisation
     }
 
+
     /**
-     * This is where the entire application is initialized.
+     * Show user MyHook configured elements.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException
+     * @throws ServletException
      */
-    private MyHook() {
-        // init and load database informations for example,
+    public void doGet(
+            HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException
+    {
+
+        JsonObjectBuilder object = Json.createObjectBuilder();
+
+        object.add("hello", "0");
+        object.add("hello1", "b");
+        object.add("hello2", "c");
+        object.add("hello3", "d");
+        object.add("hello4", "e");
+
+        response.setContentType("application/json");
+        response.setHeader("Expires", "Tue, 03 Jul 2001 06:00:00 GMT");
+        response.setDateHeader("Last-Modified", new Date().getTime());
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control",
+                "no-store, no-cache, must-revalidate, max-age=0, " +
+                                                   "post-check=0, pre-check=0");
+
+        JsonWriter writer = Json.createWriter(response.getWriter());
+        writer.writeObject(object.build());
     }
 }

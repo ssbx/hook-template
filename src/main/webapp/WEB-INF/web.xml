@@ -65,21 +65,22 @@
          You can define any number of servlets, including zero.
     -->
 
-    <servlet>
-      <servlet-name>UsersAPI</servlet-name>
-      <description>HTTP user API.</description>
-      <servlet-class>io.sysmo.hooks.template.UsersRequestHandler</servlet-class>
-    </servlet>
 
     <servlet>
-      <servlet-name>AppHooksAPI</servlet-name>
-      <description>AppHooks system API.</description>
-      <servlet-class>io.sysmo.hooks.template.AppHookRequestHandler</servlet-class>
+      <servlet-name>MyHook</servlet-name>
+      <description>MyHook system.</description>
+      <servlet-class>io.sysmo.hooks.template.MyHook</servlet-class>
       <!--
       Load this servlet at server startup time. Lower number first.
       Negative value or undefined tag disable load-on-startup.
       -->
       <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+      <servlet-name>AppHookHandler</servlet-name>
+      <description>AppHook handler.</description>
+      <servlet-class>io.sysmo.hooks.template.AppHookHandler</servlet-class>
     </servlet>
 
     <!-- Example with init params
@@ -131,12 +132,12 @@
     -->
 
     <servlet-mapping>
-      <servlet-name>UsersAPI</servlet-name>
+      <servlet-name>MyHook</servlet-name>
       <url-pattern>/app/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-      <servlet-name>AppHooksAPI</servlet-name>
+      <servlet-name>AppHookHandler</servlet-name>
       <url-pattern>/hooks/*</url-pattern>
     </servlet-mapping>
 

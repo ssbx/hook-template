@@ -14,24 +14,24 @@ import java.io.IOException;
 import java.util.Date;
 
 
-public class AppHookRequestHandler extends HttpServlet {
+public class AppHookHandler extends HttpServlet {
     private int count;
 
     /**
      * This is where we init our servlet. Called once at startup.
-     * @param config
+     * @param config servlet config
      * @throws ServletException
      */
     public void init(ServletConfig config) throws ServletException
     {
-
         this.count = 100;
-        MyHook.getInstance();
-
     }
 
     /**
-     * Handle put request
+     * Handle put request. Used by AppHooks to Add and Update an element.
+     * MUST return to the caller a json reply containing "ok" or an updated
+     * element. If no Json or other Json value is returned, the call will be
+     * triggered again and again from the Hook server.
      * @param request
      * @param response
      * @throws ServletException
@@ -43,7 +43,7 @@ public class AppHookRequestHandler extends HttpServlet {
     {
         // curl -X PUT -H 'Content-Type: application/json' -d'{"test": "test"}' http://localhost:8081/myhook/hooks/jojo
         String info = request.getPathInfo();
-        String data = AppHookRequestHandler.getJsonDataObject(request);
+        String data = AppHookHandler.getJsonDataObject(request);
 
         JsonObjectBuilder object = Json.createObjectBuilder();
         object.add("action", "put");
@@ -55,7 +55,10 @@ public class AppHookRequestHandler extends HttpServlet {
     }
 
     /**
-     * Handle delete request
+     * Handle delete request. Used by AppHooks to delete an element.
+     * MUST return the json value "ok" on success. If no Json or other Json
+     * value is returned, the call will be triggered again and again from the
+     * server side from the Hook server.
      * @param request
      * @param response
      * @throws ServletException
@@ -73,7 +76,6 @@ public class AppHookRequestHandler extends HttpServlet {
         object.add("resource_info", info);
         JsonWriter writer = Json.createWriter(response.getWriter());
         writer.writeObject(object.build());
-
     }
 
     public void doGet(
